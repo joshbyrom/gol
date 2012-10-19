@@ -93,8 +93,8 @@ package src
 			}
 		}
 		
-		protected function getWidth():int { return this.width; }
-		protected function getHeight():int { return this.height; }
+		public function getWidth():int { return this.width; }
+		public function getHeight():int { return this.height; }
 		
 		public function getDeathValue():uint 
 		{

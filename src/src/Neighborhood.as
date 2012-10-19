@@ -36,7 +36,7 @@ package src
 			
 			topRight = values[6];
 			middleRight = values[7];
-			bottomrRight = values[8];
+			bottomRight = values[8];
 		}
 		
 	}
