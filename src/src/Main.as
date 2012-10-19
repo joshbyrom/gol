@@ -22,8 +22,9 @@ package src
 			// entry point
 			
 			var world:World = new World(stage.stageWidth, stage.stageHeight);
-			var generator:Generator = new Generator(0.3);
+			var generator:Generator = new Generator(0.01);
 			
+			addChild(world.getDisplayObject());
 			world.start(generator);
 		}
 		

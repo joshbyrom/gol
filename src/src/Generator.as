@@ -18,7 +18,7 @@ package src
 			{
 				for (var y:int = 0; y < world.getHeight(); ++y)
 				{
-					if (Math.random() > this.changeForLife)
+					if (Math.random() < this.changeForLife)
 					{
 						world.setValueAt(x, y, world.getLifeValue());
 					}

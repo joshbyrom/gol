@@ -15,7 +15,8 @@ package src
 	 */
 	public class World extends EventDispatcher
 	{
-		protected var space:BitmapData
+		protected var bitmap:Bitmap = new Bitmap();
+		protected var space:BitmapData;
 		protected var rules:Vector.<Rule> = new Vector.<Rule>();
 		protected var timer:Timer;
 		
@@ -46,6 +47,7 @@ package src
 				}
 			}
 			space.copyPixels(next, new Rectangle(0, 0, next.width, next.height), new Point());
+			next.dispose();
 		}
 		
 		public function start(generator:Generator):void 
@@ -53,8 +55,10 @@ package src
 			if (timer != null) timer.stop();
 			
 			if(space != null) space.dispose();
-			space = new BitmapData(this.width, this.height, true, getDeathValue());
+			space = new BitmapData(this.width, this.height, false, getDeathValue());
+			bitmap.bitmapData = space;
 			
+			trace(bitmap, bitmap.width, bitmap.height, space.width, space.height);
 			generator.generate(this);
 			
 			timer = new Timer(1000);
@@ -69,12 +73,12 @@ package src
 		
 		public function getValueAt(x:int, y:int):uint
 		{
-			return space.getPixel(x, y);
+			return space.getPixel32(x, y);
 		}
 		
 		public function setValueAt(x:int, y:int, value:uint):void
 		{
-			space.setPixel(x, y, value);
+			space.setPixel32(x, y, value);
 		}
 		
 		public function addRule(rule:Rule):void
@@ -100,11 +104,11 @@ package src
 		
 		public function getDeathValue():uint 
 		{
-			return 0xffffff;
+			return 0x0;
 		}
 		
 		public function getLifeValue():uint {
-			return 0x0;
+			return 0xffffff;
 		}
 		
 		public function getNeighbors(x:int, y:int):Neighborhood
@@ -135,9 +139,9 @@ package src
 			return new Neighborhood(this, result);
 		}
 		
-		public function getDisplayObject():DisplayObject
+		public function getDisplayObject():Bitmap
 		{
-			return new Bitmap(space);
+			return bitmap;
 		}
 	}
 
