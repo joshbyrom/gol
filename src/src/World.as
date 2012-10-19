@@ -24,7 +24,7 @@ package src
 			this.height = h;
 		}
 		
-		protected function run(te:TimerEvent):void
+		protected function tick(te:TimerEvent):void
 		{
 			var next:BitmapData = new BitmapData(space.width, space.height);
 			for (var i:int = 0; i < space.width; ++i) 
@@ -46,10 +46,10 @@ package src
 			if (timer != null) timer.stop();
 			
 			if(space != null) space.dispose();
-			space = new BitmapData(this.width, this.height);
+			space = new BitmapData(this.width, this.height, true, getDeathValue());
 			
 			timer = new Timer(1000);
-			timer.addEventListener(TimerEvent.TIMER, run);
+			timer.addEventListener(TimerEvent.TIMER, tick);
 			timer.start();
 		}
 		
@@ -61,6 +61,11 @@ package src
 		public function getValueAt(x:int, y:int):uint
 		{
 			return space.getPixel(x, y);
+		}
+		
+		public function setValueAt(x:int, y:int, value:uint):void
+		{
+			space.setPixel(x, y, value);
 		}
 		
 		public function addRule(rule:Rule):void
@@ -80,6 +85,20 @@ package src
 				this.rules.splice(index, 1);
 			}
 		}
+		
+		protected function getWidth():int { return this.width; }
+		protected function getHeight():int { return this.height; }
+		
+		public function getDeathValue():uint 
+		{
+			return 0xffffff;
+		}
+		
+		public function getLifeValue():uint {
+			return 0x0;
+		}
+		
+		public function getNeighbors(
 	}
 
 }
