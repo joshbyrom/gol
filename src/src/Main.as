@@ -9,7 +9,7 @@ package src
 	 */
 	public class Main extends Sprite 
 	{
-		
+
 		public function Main():void 
 		{
 			if (stage) init();
@@ -20,6 +20,11 @@ package src
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			// entry point
+			
+			var world:World = new World(stage.stageWidth, stage.stageHeight);
+			var generator:Generator = new Generator(0.3);
+			
+			world.start(generator);
 		}
 		
 	}

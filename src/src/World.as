@@ -1,9 +1,13 @@
 package src 
 {
+	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.display.GraphicsSolidFill;
 	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.utils.Timer;
 	/**
 	 * ...
@@ -39,14 +43,17 @@ package src
 					}
 				}
 			}
+			space.copyPixels(next, new Rectangle(0, 0, next.width, next.height), new Point());
 		}
 		
-		public function start():void 
+		public function start(generator:Generator):void 
 		{
 			if (timer != null) timer.stop();
 			
 			if(space != null) space.dispose();
 			space = new BitmapData(this.width, this.height, true, getDeathValue());
+			
+			generator.generate(this);
 			
 			timer = new Timer(1000);
 			timer.addEventListener(TimerEvent.TIMER, tick);
@@ -98,7 +105,38 @@ package src
 			return 0x0;
 		}
 		
-		public function getNeighbors(
+		public function getNeighbors(x:int, y:int):Neighborhood
+		{
+			var result:Vector.<uint> = new Vector.<uint>();
+			
+			var startX:int = x - 1;
+			var startY:int = y - 1;
+			
+			var endX:int = x + 1;
+			var endY:int = y + 1;
+			
+			var realX:int, realY:int;
+			for (var i:int = startX; i < endX; ++i) 
+			{
+				realX = i;
+				if (realX < 0) realX = getWidth() - 1;
+				else if (realX > getWidth() - 1) realX = 0;
+				for (var k:int = startY; k < endY; ++k)
+				{
+					realY = k;
+					if (realY < 0) realY = getHeight() - 1;
+					else if (realY > getHeight() - 1) realY = 0;
+					result.push(getValueAt(realX, realY));
+				}
+			}
+			
+			return new Neighborhood(this, result);
+		}
+		
+		public function getDisplayObject():DisplayObject
+		{
+			return new Bitmap(space);
+		}
 	}
 
 }
