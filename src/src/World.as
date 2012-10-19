@@ -30,16 +30,18 @@ package src
 		
 		protected function tick(te:TimerEvent):void
 		{
+			if (rules.length == 0) return;
+			
 			var next:BitmapData = new BitmapData(space.width, space.height);
 			for (var i:int = 0; i < space.width; ++i) 
 			{
-				for (var k:int = 0; k < space.height; ++i)
+				for (var k:int = 0; k < space.height; ++k)
 				{
 					var result:uint = 0;
-					for (var rule:Rule in rules)
+					for each (var rule:Rule in rules)
 					{
 						result = rule.apply(this, i, k);
-						next.setPixel(result);
+						next.setPixel(i, k, result);
 					}
 				}
 			}

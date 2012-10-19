@@ -14,7 +14,7 @@ package src
 		public var numberAlive:uint = 0;
 		public function Neighborhood(world:World, values:Vector.<uint>) 
 		{
-			for (var value:uint in values)
+			for each (var value:uint in values)
 			{
 				if (value == world.getDeathValue())
 					numberDead += 1;
