@@ -7,9 +7,9 @@ package src
 	public class Rule 
 	{
 		
-		public function apply(world:World, x:int, y:int):uint
+		public function apply(world:World, neighborhood:Neighborhood):uint
 		{
-			return world.getValueAt(x, y);	// default is no changes
+			return neighborhood.middleCenter;	// default is no changes
 		}
 		
 	}

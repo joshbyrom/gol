@@ -2,6 +2,7 @@ package src
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import src.rules.Death;
 	
 	/**
 	 * ...
@@ -21,10 +22,11 @@ package src
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			// entry point
 			
-			var world:World = new World(stage.stageWidth, stage.stageHeight);
+			var world:World = new World(100, 100);
 			var generator:Generator = new Generator(0.01);
-			
 			addChild(world.getDisplayObject());
+			
+			world.addRule(new Death());
 			world.start(generator);
 		}
 		

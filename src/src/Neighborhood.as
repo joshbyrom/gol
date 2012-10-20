@@ -10,16 +10,29 @@ package src
 		public var middleLeft:uint, middleCenter:uint, middleRight:uint;
 		public var bottomLeft:uint, bottomCenter:uint, bottomRight:uint;
 		
+		public var centerIsAlive:Boolean = false;
 		public var numberDead:uint = 0;
 		public var numberAlive:uint = 0;
 		public function Neighborhood(world:World, values:Vector.<uint>) 
-		{
-			for each (var value:uint in values)
+		{			
+			var value:uint = 0;
+			for (var i:int = 0; i < values.length; ++i )
 			{
-				if (value == world.getDeathValue())
+				value = values[i];
+				
+				if (i == 4) 
+				{
+					centerIsAlive = (value == world.getLifeValue());
+					continue;
+				}
+				else if (value == world.getDeathValue())
+				{
 					numberDead += 1;
+				}
 				else if (value == world.getLifeValue())
+				{
 					numberAlive += 1;
+				}
 				else 
 				{
 					// unknown values

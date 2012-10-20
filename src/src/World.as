@@ -33,21 +33,25 @@ package src
 		{
 			if (rules.length == 0) return;
 			
-			var next:BitmapData = new BitmapData(space.width, space.height);
+			var current_neighbors:Neighborhood;
+			var next:BitmapData = new BitmapData(space.width, space.height, false);
 			for (var i:int = 0; i < space.width; ++i) 
 			{
 				for (var k:int = 0; k < space.height; ++k)
 				{
 					var result:uint = 0;
+					current_neighbors = this.getNeighbors(i, k);
 					for each (var rule:Rule in rules)
 					{
-						result = rule.apply(this, i, k);
+						result = rule.apply(this, current_neighbors);
 						next.setPixel(i, k, result);
 					}
 				}
 			}
 			space.copyPixels(next, new Rectangle(0, 0, next.width, next.height), new Point());
 			next.dispose();
+			
+			trace("tick");
 		}
 		
 		public function start(generator:Generator):void 
@@ -58,7 +62,6 @@ package src
 			space = new BitmapData(this.width, this.height, false, getDeathValue());
 			bitmap.bitmapData = space;
 			
-			trace(bitmap, bitmap.width, bitmap.height, space.width, space.height);
 			generator.generate(this);
 			
 			timer = new Timer(1000);
@@ -73,12 +76,12 @@ package src
 		
 		public function getValueAt(x:int, y:int):uint
 		{
-			return space.getPixel32(x, y);
+			return space.getPixel(x, y);
 		}
 		
 		public function setValueAt(x:int, y:int, value:uint):void
 		{
-			space.setPixel32(x, y, value);
+			space.setPixel(x, y, value);
 		}
 		
 		public function addRule(rule:Rule):void
@@ -104,7 +107,7 @@ package src
 		
 		public function getDeathValue():uint 
 		{
-			return 0x0;
+			return 0x000000;
 		}
 		
 		public function getLifeValue():uint {
@@ -121,18 +124,11 @@ package src
 			var endX:int = x + 1;
 			var endY:int = y + 1;
 			
-			var realX:int, realY:int;
-			for (var i:int = startX; i < endX; ++i) 
+			for (var i:int = startX; i <= endX; ++i) 
 			{
-				realX = i;
-				if (realX < 0) realX = getWidth() - 1;
-				else if (realX > getWidth() - 1) realX = 0;
-				for (var k:int = startY; k < endY; ++k)
+				for (var k:int = startY; k <= endY; ++k)
 				{
-					realY = k;
-					if (realY < 0) realY = getHeight() - 1;
-					else if (realY > getHeight() - 1) realY = 0;
-					result.push(getValueAt(realX, realY));
+					result.push(getValueAt((i + width) % width, (k + height) % height));
 				}
 			}
 			
