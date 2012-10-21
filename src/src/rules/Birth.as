@@ -11,7 +11,6 @@ package src.rules
 		
 		override public function apply(world:World, neighbors:Neighborhood):uint 
 		{
-			// dies by under-population and over-crowding
 			if (neighbors.centerIsAlive == false && neighbors.numberAlive == 3)
 			{
 				return world.getLiveValue();

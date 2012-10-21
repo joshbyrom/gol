@@ -21,7 +21,7 @@ package src.rules
 			}
 			else 
 			{
-				return super.apply(world, neighbors);
+				return neighbors.middleCenter;
 			}
 		}
 		

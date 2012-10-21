@@ -23,7 +23,7 @@ package src
 			// entry point
 			
 			var world:World = new World(100, 100);
-			var generator:Generator = new Generator(0.01);
+			var generator:Generator = new Generator(0.03);
 			addChild(world.getDisplayObject());
 			
 			world.addRule(new Death());
