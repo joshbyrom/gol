@@ -36,6 +36,7 @@ package src
 				else 
 				{
 					// unknown values
+					trace(value);
 				}
 			}
 			

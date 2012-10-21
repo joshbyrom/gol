@@ -23,6 +23,9 @@ package src
 		protected var height:int;
 		protected var width:int;
 		
+		protected var deathValue:uint = 0x000000;
+		protected var lifeValue:uint = 0xffffff;
+		
 		public function World(w:int, h:int) 
 		{
 			this.width = w;
@@ -107,11 +110,11 @@ package src
 		
 		public function getDeathValue():uint 
 		{
-			return 0x000000;
+			return this.deathValue;
 		}
 		
 		public function getLifeValue():uint {
-			return 0xffffff;
+			return this.lifeValue;
 		}
 		
 		public function getNeighbors(x:int, y:int):Neighborhood
