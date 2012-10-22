@@ -3,7 +3,7 @@ package src
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import src.rules.Birth;
-	import src.rules.Death;
+	import src.rules.Survival;
 	
 	/**
 	 * ...
@@ -27,7 +27,7 @@ package src
 			var generator:Generator = new Generator(0.03);
 			addChild(world.getDisplayObject());
 			
-			world.addRule(new Death());
+			world.addRule(new Survival());
 			world.addRule(new Birth());
 			world.start(generator);
 		}

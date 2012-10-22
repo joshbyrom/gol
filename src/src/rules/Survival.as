@@ -8,7 +8,7 @@ package src.rules
 	 * ...
 	 * @author Josh Byrom
 	 */
-	public class Death extends Rule 
+	public class Survival extends Rule 
 	{
 		
 		override public function apply(world:World, neighbors:Neighborhood):uint 
