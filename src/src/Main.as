@@ -24,11 +24,11 @@ package src
 			// entry point
 			
 			var world:World = new World(100, 100);
-			var generator:Generator = new Generator(0.03);
+			var generator:Generator = new Generator(0.1);
 			addChild(world.getDisplayObject());
 			
-			world.addRule(new Survival());
 			world.addRule(new Birth());
+			world.addRule(new Survival());
 			world.start(generator);
 		}
 		

@@ -4,6 +4,7 @@ package src
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.GraphicsSolidFill;
+	import flash.display.Shape;
 	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -15,8 +16,8 @@ package src
 	 */
 	public class World extends EventDispatcher
 	{
-		protected var bitmap:Bitmap = new Bitmap();
-		protected var space:BitmapData;
+		protected var shape:Shape = new Shape();
+		protected var space:Vector.<Vector.<uint>>;
 		protected var rules:Vector.<Rule> = new Vector.<Rule>();
 		protected var timer:Timer;
 		
@@ -36,37 +37,62 @@ package src
 		{
 			if (rules.length == 0) return;
 			
+			var result:uint;
 			var current_neighbors:Neighborhood;
-			var next:BitmapData = new BitmapData(space.width, space.height, false);
-			for (var i:int = 0; i < space.width; ++i) 
+			for (var i:int = 0; i < width; ++i) 
 			{
-				for (var k:int = 0; k < space.height; ++k)
+				for (var k:int = 0; k < height; ++k)
 				{
-					var result:uint = 0;
 					current_neighbors = this.getNeighbors(i, k);
 					for each (var rule:Rule in rules)
 					{
 						result = rule.apply(this, current_neighbors);
-						next.setPixel(i, k, result);
+						
+						if (current_neighbors.middleCenter != result)
+						{
+							setValueAt(i, k, result);
+							current_neighbors.middleCenter = result;
+							
+							drawValueAt(i, k, result);
+						}
 					}
 				}
 			}
-			space.copyPixels(next, new Rectangle(0, 0, next.width, next.height), new Point());
-			next.dispose();
 			
+		}
+		
+		protected function drawValueAt(x:int, y:int, value:uint):void
+		{
+			shape.graphics.beginFill(value);
+			shape.graphics.drawRect(x * 4, y * 4, 4, 4);
+			shape.graphics.endFill();
+		}
+		
+		protected function init():void {
+			for (var i:int = 0; i < width; ++i) {
+				space.push(new Vector.<uint>());
+				for (var j:int = 0; j < height; ++j) {
+					space[i].push(getDeathValue());
+				}
+			}
 		}
 		
 		public function start(generator:Generator):void 
 		{
 			if (timer != null) timer.stop();
 			
-			if(space != null) space.dispose();
-			space = new BitmapData(this.width, this.height, false, getDeathValue());
-			bitmap.bitmapData = space;
+			space = new Vector.<Vector.<uint>>();
+			shape.graphics.clear();
+			init();
 			
 			generator.generate(this);
+			for (var i:int = 0; i < width; ++i) {
+				for (var j:int = 0; j < height; ++j) {
+					drawValueAt(i, j, getValueAt(i, j));
+				}
+			}
 			
-			timer = new Timer(1000);
+			timer = new Timer(33);
 			timer.addEventListener(TimerEvent.TIMER, tick);
 			timer.start();
 		}
@@ -78,12 +104,12 @@ package src
 		
 		public function getValueAt(x:int, y:int):uint
 		{
-			return space.getPixel(x, y);
+			return space[x][y];
 		}
 		
 		public function setValueAt(x:int, y:int, value:uint):void
 		{
-			space.setPixel(x, y, value);
+			space[x][y] = value;
 		}
 		
 		public function addRule(rule:Rule):void
@@ -137,9 +163,9 @@ package src
 			return new Neighborhood(this, result);
 		}
 		
-		public function getDisplayObject():Bitmap
+		public function getDisplayObject():Shape
 		{
-			return bitmap;
+			return shape;
 		}
 	}
 
