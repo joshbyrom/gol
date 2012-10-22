@@ -54,7 +54,6 @@ package src
 			space.copyPixels(next, new Rectangle(0, 0, next.width, next.height), new Point());
 			next.dispose();
 			
-			trace("tick");
 		}
 		
 		public function start(generator:Generator):void 

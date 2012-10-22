@@ -1,6 +1,8 @@
 package src.rules 
 {
+	import src.Neighborhood;
 	import src.Rule;
+	import src.World;
 	
 	/**
 	 * ...
@@ -13,7 +15,7 @@ package src.rules
 		{
 			if (neighbors.centerIsAlive == false && neighbors.numberAlive == 3)
 			{
-				return world.getLiveValue();
+				return world.getLifeValue();
 			}
 			else 
 			{

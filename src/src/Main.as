@@ -2,6 +2,7 @@ package src
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import src.rules.Birth;
 	import src.rules.Death;
 	
 	/**
@@ -27,6 +28,7 @@ package src
 			addChild(world.getDisplayObject());
 			
 			world.addRule(new Death());
+			world.addRule(new Birth());
 			world.start(generator);
 		}
 		
