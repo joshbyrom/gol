@@ -24,6 +24,9 @@ package src
 		
 		public function from(world:World, values:Vector.<Space>):void
 		{
+			numberAlive = 0;
+			numberDead = 0;
+			
 			var value:Space = null;
 			for (var i:int = 0; i < values.length; ++i )
 			{

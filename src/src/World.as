@@ -31,6 +31,8 @@ package src
 		protected var currentNeighbors:Neighborhood = new Neighborhood();
 		protected var changeQue:Vector.<FutureSpaceChange> = new Vector.<FutureSpaceChange>();
 		
+		protected var intensity:int = 250;
+		
 		public function World(w:int, h:int)
 		{
 			this.width = w;
@@ -41,45 +43,41 @@ package src
 		{
 			if (rules.length == 0)
 				return;
-			shape.graphics.clear();
 			
 			for (var i:int = 0; i < width; ++i)
 			{
 				for (var k:int = 0; k < height; ++k)
 				{
 					loadNeighborsIntoCurrent(i, k);
-					applyRules(currentNeighbors);
-					
-					drawValueAt(i, k);
+					applyRules();
 				}
 			}
 		
-			shuffleQue();
-			shiftChangeQue(250);
-		}
-		
-		protected function shiftChangeQue(num:int):void
-		{
-			if (num == 0) return;
-			
-			if (changeQue.length > 0)
+			while(changeQue.length > 0)
 			{
-				var change:FutureSpaceChange = changeQue.shift();
+				var change:FutureSpaceChange = changeQue.pop();
 				setValueAt(change.column, change.row, change.state);
 			}
 			
-			shiftChangeQue(num - 1);
+			shape.graphics.clear();
+			for (i = 0; i < width; ++i)
+			{
+				for (k = 0; k < height; ++k)
+				{
+					drawValueAt(i, k);
+				}
+			}
 		}
 		
-		protected function applyRules(neighbors:Neighborhood):Boolean
+		protected function applyRules():Boolean
 		{
 			for each (var rule:Rule in rules)
 			{
-				if (rule.matches(this, neighbors))
+				if (rule.matches(this, currentNeighbors))
 				{
-					var newState:int = rule.apply(this, neighbors);
-					changeQue.push(new FutureSpaceChange(neighbors.centerColumn, 
-					                                     neighbors.centerRow, 
+					var newState:int = rule.apply(this, currentNeighbors);
+					changeQue.push(new FutureSpaceChange(currentNeighbors.centerColumn, 
+					                                     currentNeighbors.centerRow, 
 														 newState));
 					return true;
 				}
