@@ -6,30 +6,30 @@ package src
 	 */
 	public class Neighborhood 
 	{
-		public var topLeft:uint, topCenter:uint, topRight:uint;
-		public var middleLeft:uint, middleCenter:uint, middleRight:uint;
-		public var bottomLeft:uint, bottomCenter:uint, bottomRight:uint;
+		public var topLeft:Space, topCenter:Space, topRight:Space;
+		public var middleLeft:Space, middleCenter:Space, middleRight:Space;
+		public var bottomLeft:Space, bottomCenter:Space, bottomRight:Space;
 		
 		public var centerIsAlive:Boolean = false;
 		public var numberDead:uint = 0;
 		public var numberAlive:uint = 0;
-		public function Neighborhood(world:World, values:Vector.<uint>) 
+		public function Neighborhood(world:World, values:Vector.<Space>) 
 		{			
-			var value:uint = 0;
+			var value:Space = null;
 			for (var i:int = 0; i < values.length; ++i )
 			{
 				value = values[i];
 				
 				if (i == 4) 
 				{
-					centerIsAlive = (value == world.getLifeValue());
+					centerIsAlive = value.isAlive();
 					continue;
 				}
-				else if (value == world.getDeathValue())
+				else if (value.isDead())
 				{
 					numberDead += 1;
 				}
-				else if (value == world.getLifeValue())
+				else if (value.isAlive())
 				{
 					numberAlive += 1;
 				}

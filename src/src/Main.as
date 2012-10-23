@@ -3,6 +3,7 @@ package src
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import src.rules.Birth;
+	import src.rules.Mortality;
 	import src.rules.Survival;
 	
 	/**
@@ -24,11 +25,12 @@ package src
 			// entry point
 			
 			var world:World = new World(100, 100);
-			var generator:Generator = new Generator(0.1);
+			var generator:Generator = new Generator(0.06);
 			addChild(world.getDisplayObject());
 			
 			world.addRule(new Birth());
 			world.addRule(new Survival());
+			world.addRule(new Mortality());
 			world.start(generator);
 		}
 		

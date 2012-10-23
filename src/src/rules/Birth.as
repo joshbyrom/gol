@@ -2,6 +2,7 @@ package src.rules
 {
 	import src.Neighborhood;
 	import src.Rule;
+	import src.Space;
 	import src.World;
 	
 	/**
@@ -10,17 +11,14 @@ package src.rules
 	 */
 	public class Birth extends Rule 
 	{
-		
-		override public function apply(world:World, neighbors:Neighborhood):uint 
+		override public function matches(world:World, neighbors:Neighborhood):Boolean 
 		{
-			if (neighbors.centerIsAlive == false && neighbors.numberAlive == 3)
-			{
-				return world.getLifeValue();
-			}
-			else 
-			{
-				return super.apply(world, neighbors);
-			}
+			return (neighbors.centerIsAlive == false && neighbors.numberAlive == 3);
+		}
+		
+		override public function apply(world:World, neighbors:Neighborhood):int 
+		{
+			return Space.ALIVE;
 		}
 		
 	}

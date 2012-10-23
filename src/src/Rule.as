@@ -7,9 +7,14 @@ package src
 	public class Rule 
 	{
 		
-		public function apply(world:World, neighborhood:Neighborhood):uint
+		public function apply(world:World, neighborhood:Neighborhood):int
 		{
-			return neighborhood.middleCenter;	// default is no changes
+			return neighborhood.middleCenter.getState();	// default is no changes
+		}
+		
+		public function matches(world:World, neighborhood:Neighborhood):Boolean
+		{
+			return false;
 		}
 		
 	}

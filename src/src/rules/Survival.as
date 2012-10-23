@@ -2,6 +2,7 @@ package src.rules
 {
 	import src.Neighborhood;
 	import src.Rule;
+	import src.Space;
 	import src.World;
 	
 	/**
@@ -11,17 +12,14 @@ package src.rules
 	public class Survival extends Rule 
 	{
 		
-		override public function apply(world:World, neighbors:Neighborhood):uint 
+		override public function matches(world:World, neighbors:Neighborhood):Boolean 
 		{
-			// dies by under-population and over-crowding
-			if (neighbors.centerIsAlive && (neighbors.numberAlive < 2 || neighbors.numberAlive > 3))
-			{
-				return world.getDeathValue();
-			}
-			else 
-			{
-				return neighbors.middleCenter;
-			}
+			return neighbors.centerIsAlive && (neighbors.numberAlive == 2 || neighbors.numberAlive == 3);
+		}
+		
+		override public function apply(world:World, neighbors:Neighborhood):int 
+		{
+			return Space.SURVIVING;
 		}
 		
 	}

@@ -17,14 +17,14 @@ package src
 	public class World extends EventDispatcher
 	{
 		protected var shape:Shape = new Shape();
-		protected var space:Vector.<Vector.<uint>>;
+		protected var space:Vector.<Vector.<Space>>;
 		protected var rules:Vector.<Rule> = new Vector.<Rule>();
 		protected var timer:Timer;
 		
 		protected var height:int;
 		protected var width:int;
 		
-		protected var deathValue:uint = 0x000000;
+		protected var deathValue:uint = 0x0;
 		protected var lifeValue:uint = 0xffffff;
 		
 		public function World(w:int, h:int) 
@@ -36,43 +36,52 @@ package src
 		protected function tick(te:TimerEvent):void
 		{
 			if (rules.length == 0) return;
+			shape.graphics.clear();
 			
-			var result:uint;
-			var current_neighbors:Neighborhood;
+			var currentNeighbors:Neighborhood;
 			for (var i:int = 0; i < width; ++i) 
 			{
 				for (var k:int = 0; k < height; ++k)
 				{
-					current_neighbors = this.getNeighbors(i, k);
-					for each (var rule:Rule in rules)
-					{
-						result = rule.apply(this, current_neighbors);
-						
-						if (current_neighbors.middleCenter != result)
-						{
-							setValueAt(i, k, result);
-							current_neighbors.middleCenter = result;
-							
-							drawValueAt(i, k, result);
-						}
-					}
+					currentNeighbors = this.getNeighbors(i, k);
+					applyRules(currentNeighbors);
+					
+					drawValueAt(i, k);
+					
 				}
 			}
 			
 		}
 		
-		protected function drawValueAt(x:int, y:int, value:uint):void
+		protected function applyRules(neighbors:Neighborhood):Boolean
 		{
-			shape.graphics.beginFill(value);
+			for each(var rule:Rule in rules)
+			{
+				if (rule.matches(this, neighbors))
+				{
+					neighbors.middleCenter.setState(rule.apply(this, neighbors));
+					return true;
+				}
+			}
+			
+			return false;
+		}
+		
+		
+		protected function drawValueAt(x:int, y:int):void
+		{
+			var space:Space = getValueAt(x, y);
+			
+			shape.graphics.beginFill(space.isAlive() ? getLifeColor() : getDeathColor());
 			shape.graphics.drawRect(x * 4, y * 4, 4, 4);
 			shape.graphics.endFill();
 		}
 		
 		protected function init():void {
 			for (var i:int = 0; i < width; ++i) {
-				space.push(new Vector.<uint>());
+				space.push(new Vector.<Space>());
 				for (var j:int = 0; j < height; ++j) {
-					space[i].push(getDeathValue());
+					space[i].push(new Space(i, j, Space.DEAD));
 				}
 			}
 		}
@@ -81,18 +90,18 @@ package src
 		{
 			if (timer != null) timer.stop();
 			
-			space = new Vector.<Vector.<uint>>();
+			space = new Vector.<Vector.<Space>>();
 			shape.graphics.clear();
 			init();
 			
 			generator.generate(this);
 			for (var i:int = 0; i < width; ++i) {
 				for (var j:int = 0; j < height; ++j) {
-					drawValueAt(i, j, getValueAt(i, j));
+					drawValueAt(i, j);
 				}
 			}
 			
-			timer = new Timer(33);
+			timer = new Timer(50);
 			timer.addEventListener(TimerEvent.TIMER, tick);
 			timer.start();
 		}
@@ -102,14 +111,14 @@ package src
 			if (timer != null) timer.stop();
 		}
 		
-		public function getValueAt(x:int, y:int):uint
+		public function getValueAt(x:int, y:int):Space
 		{
 			return space[x][y];
 		}
 		
-		public function setValueAt(x:int, y:int, value:uint):void
+		public function setValueAt(x:int, y:int, value:int):void
 		{
-			space[x][y] = value;
+			space[x][y].setState(value);
 		}
 		
 		public function addRule(rule:Rule):void
@@ -133,18 +142,18 @@ package src
 		public function getWidth():int { return this.width; }
 		public function getHeight():int { return this.height; }
 		
-		public function getDeathValue():uint 
+		public function getDeathColor():uint 
 		{
 			return this.deathValue;
 		}
 		
-		public function getLifeValue():uint {
+		public function getLifeColor():uint {
 			return this.lifeValue;
 		}
 		
 		public function getNeighbors(x:int, y:int):Neighborhood
 		{
-			var result:Vector.<uint> = new Vector.<uint>();
+			var result:Vector.<Space> = new Vector.<Space>();
 			
 			var startX:int = x - 1;
 			var startY:int = y - 1;

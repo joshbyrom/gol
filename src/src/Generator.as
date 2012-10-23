@@ -20,7 +20,7 @@ package src
 				{
 					if (Math.random() < this.changeForLife)
 					{
-						world.setValueAt(x, y, world.getLifeValue());
+						world.setValueAt(x, y, Space.ALIVE);
 					}
 				}
 			}
