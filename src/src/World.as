@@ -32,6 +32,7 @@ package src
 		protected var changeQue:Vector.<FutureSpaceChange> = new Vector.<FutureSpaceChange>();
 		
 		protected var intensity:int = 250;
+		protected var tickCount:int = 0;
 		
 		public function World(w:int, h:int)
 		{
@@ -44,29 +45,25 @@ package src
 			if (rules.length == 0)
 				return;
 			
+			shape.graphics.clear();
 			for (var i:int = 0; i < width; ++i)
 			{
 				for (var k:int = 0; k < height; ++k)
 				{
 					loadNeighborsIntoCurrent(i, k);
 					applyRules();
+					drawValueAt(i, k);
 				}
 			}
 		
+			shuffleQue();
 			while(changeQue.length > 0)
 			{
 				var change:FutureSpaceChange = changeQue.pop();
 				setValueAt(change.column, change.row, change.state);
 			}
 			
-			shape.graphics.clear();
-			for (i = 0; i < width; ++i)
-			{
-				for (k = 0; k < height; ++k)
-				{
-					drawValueAt(i, k);
-				}
-			}
+			tickCount += 1;
 		}
 		
 		protected function applyRules():Boolean
@@ -223,6 +220,7 @@ package src
 				changeQue[index] = temp;
 			}
 		}
+		
 	}
 }
 
