@@ -83,6 +83,16 @@ package src
 		{
 			return this.state == SURVIVING;
 		}
+		
+		public function getColumn():int
+		{
+			return this.column;
+		}
+		
+		public function getRow():int
+		{
+			return this.row;
+		}
 	}
 
 }

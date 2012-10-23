@@ -13,8 +13,17 @@ package src
 		public var centerIsAlive:Boolean = false;
 		public var numberDead:uint = 0;
 		public var numberAlive:uint = 0;
-		public function Neighborhood(world:World, values:Vector.<Space>) 
+		
+		public var centerColumn:int;
+		public var centerRow:int;
+		
+		public function Neighborhood() 
 		{			
+			
+		}
+		
+		public function from(world:World, values:Vector.<Space>):void
+		{
 			var value:Space = null;
 			for (var i:int = 0; i < values.length; ++i )
 			{
@@ -23,6 +32,8 @@ package src
 				if (i == 4) 
 				{
 					centerIsAlive = value.isAlive();
+					centerColumn = value.getColumn();
+					centerRow = value.getRow();
 					continue;
 				}
 				else if (value.isDead())
