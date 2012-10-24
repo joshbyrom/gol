@@ -14,12 +14,14 @@ What You Need
 ------------------
 A modern browser that supports Flash (i.e. Chrome) and some time to kill.
 
+If you are interested in using the source in your own projects, a project file for FlashDevelop is included.
+
 
 Description
 ------------------
 A project that is designed to be reusable and a starting point for experimenting with the unique structures that can be formed using CA and simple rules. If you are looking for the smallest possible implementation, then you will be dissapointed as reusablity is the priority here.
 
 
-This project should be suitable as a starting point to define further CA experiments, and should be simple enough to understand without much study. To have the cellspace act differently or to follow different rules, simply inherit from the Rule class and create your own rules!
+This project should be suitable as a starting point to define further CA experiments, and should be simple enough to understand without much study. To have the cellspace act differently or to follow different rules, simply inherit from the Rule class and create your own rules; or if you want a different starting population (to maybe created a more sophisticated GOL object), inherit from the Generator class, which generated the initial population randomly by default, and implement your own custom starting population!
 
 Enjoy. 
