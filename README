@@ -1,0 +1,25 @@
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+                              Conway's Game of Life
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+                                                                                
+
+Famous Zero Player Game
+====================================
+
+
+
+What You Need
+------------------
+A modern browser that supports Flash (i.e. Chrome) and some time to kill.
+
+
+Description
+------------------
+A project that is designed to be reusable and a starting point for experimenting with the unique structures that can be formed using CA and simple rules. If you are looking for the smallest possible implementation, then you will be dissapointed as reusablity is the priority here.
+
+
+This project should be suitable as a starting point to define further CA experiments, and should be simple enough to understand without much study. To have the cellspace act differently or to follow different rules, simply inherit from the Rule class and create your own rules!
+
+Enjoy. 
